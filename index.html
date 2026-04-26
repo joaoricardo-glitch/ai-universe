@@ -9,7 +9,7 @@
 <meta name="theme-color" content="#080c10">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
-<title>AI Universe</title>
+<title>AI Universe — Grátis</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -20,44 +20,48 @@
   ::-webkit-scrollbar-thumb{background:#1a2230;border-radius:3px}
   input,textarea,select{font-family:'Syne',sans-serif;-webkit-appearance:none}
 
-  /* BG */
   #bg-grid{position:fixed;inset:0;background-image:linear-gradient(rgba(0,229,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.025) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
   #blob1{position:fixed;width:500px;height:500px;border-radius:50%;background:#a259ff;filter:blur(120px);opacity:.08;top:-150px;left:-100px;pointer-events:none;z-index:0}
   #blob2{position:fixed;width:400px;height:400px;border-radius:50%;background:#00e5ff;filter:blur(120px);opacity:.06;bottom:100px;right:-100px;pointer-events:none;z-index:0}
 
   #app{position:relative;z-index:1;max-width:1400px;margin:0 auto;padding:0 16px 100px}
 
-  /* HEADER */
-  header{padding:env(safe-area-inset-top, 48px) 0 32px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px;padding-top:max(48px, calc(env(safe-area-inset-top) + 24px))}
+  header{padding:max(48px,calc(env(safe-area-inset-top) + 24px)) 0 32px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px}
   .logo-tag{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:4px;color:#00e5ff;text-transform:uppercase;border:1px solid rgba(0,229,255,.3);padding:6px 16px;border-radius:2px}
-  h1{font-size:clamp(38px,8vw,84px);font-weight:800;line-height:.95;letter-spacing:-2px}
+  h1{font-size:clamp(36px,8vw,84px);font-weight:800;line-height:.95;letter-spacing:-2px}
   .glow{background:linear-gradient(135deg,#00e5ff,#a259ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
   .subtitle{font-size:14px;color:#5a6a7a;max-width:420px;line-height:1.6}
 
-  /* SEARCH */
+  /* FREE TOGGLE */
+  .free-toggle-wrap{display:flex;align-items:center;gap:10px;background:rgba(0,200,150,.06);border:1px solid rgba(0,200,150,.2);border-radius:8px;padding:10px 16px}
+  .free-toggle-wrap label{font-size:13px;color:#00c896;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px}
+  .toggle{position:relative;width:44px;height:24px;flex-shrink:0}
+  .toggle input{opacity:0;width:0;height:0}
+  .slider{position:absolute;inset:0;background:#1a2230;border-radius:24px;cursor:pointer;transition:.3s}
+  .slider:before{content:"";position:absolute;width:18px;height:18px;left:3px;top:3px;background:#5a6a7a;border-radius:50%;transition:.3s}
+  input:checked + .slider{background:rgba(0,200,150,.3);border:1px solid #00c896}
+  input:checked + .slider:before{transform:translateX(20px);background:#00c896}
+  .free-count{margin-left:auto;font-family:'Space Mono',monospace;font-size:11px;color:#00c896}
+
   .search-wrap{width:100%;max-width:540px;position:relative}
   .search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#5a6a7a;font-size:18px;pointer-events:none}
   .search-wrap input{width:100%;background:rgba(255,255,255,.04);border:1px solid #1a2230;border-radius:6px;padding:12px 40px 12px 44px;color:#e8f0fe;font-size:15px;outline:none;transition:border-color .2s}
   .search-wrap input:focus{border-color:#00e5ff}
   .search-clear{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:#5a6a7a;cursor:pointer;font-size:18px;display:none}
 
-  /* STATS */
   .stats{display:flex;gap:28px;flex-wrap:wrap;justify-content:center}
   .stat-num{display:block;font-family:'Space Mono',monospace;font-size:26px;font-weight:700;color:#00e5ff}
   .stat-label{font-size:11px;color:#5a6a7a;letter-spacing:1px;text-transform:uppercase}
 
-  /* FILTERS */
   #filters{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:28px 0 40px}
   .filter-btn{background:transparent;border:1px solid #1a2230;color:#5a6a7a;padding:8px 14px;border-radius:4px;cursor:pointer;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;transition:all .2s;display:flex;align-items:center;gap:6px;white-space:nowrap}
   .filter-btn.active{border-color:var(--c);color:var(--c);background:rgba(128,128,128,.08)}
 
-  /* ADMIN BAR */
   #admin-bar{background:rgba(162,89,255,.08);border:1px solid rgba(162,89,255,.2);border-radius:8px;padding:12px 16px;margin-bottom:28px;display:none;align-items:center;gap:10px;flex-wrap:wrap}
   #admin-bar.show{display:flex}
   .admin-label{font-size:12px;color:#a259ff;font-family:'Space Mono',monospace}
   .admin-btns{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
 
-  /* CATEGORY */
   .cat-section{margin-bottom:56px;animation:fadeUp .4s ease both}
   .cat-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid #1a2230}
   .cat-icon{width:42px;height:42px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
@@ -65,10 +69,8 @@
   .cat-count{margin-left:auto;font-family:'Space Mono',monospace;font-size:11px;color:#5a6a7a;border:1px solid #1a2230;padding:3px 10px;border-radius:2px;white-space:nowrap}
   .cat-admin-btns{display:flex;gap:6px;margin-left:8px}
 
-  /* GRID */
   .ai-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
 
-  /* CARD */
   .ai-card{background:#0e1318;border:1px solid #1a2230;border-radius:8px;padding:18px;position:relative;overflow:hidden;transition:all .2s;text-decoration:none;color:inherit;display:block;cursor:pointer}
   .ai-card:hover,.ai-card:active{transform:translateY(-2px)}
   .card-glow{position:absolute;inset:0;opacity:0;transition:opacity .2s;pointer-events:none}
@@ -77,14 +79,17 @@
   .card-emoji{width:40px;height:40px;border-radius:8px;background:rgba(255,255,255,.06);border:1px solid #1a2230;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
   .card-name{font-size:15px;font-weight:700;line-height:1.2;margin-bottom:2px}
   .card-maker{font-size:11px;color:#5a6a7a;font-family:'Space Mono',monospace}
-  .card-desc{font-size:13px;color:#7080a0;line-height:1.6;margin-bottom:12px;padding-right:56px}
+  .card-desc{font-size:13px;color:#7080a0;line-height:1.6;margin-bottom:12px;padding-right:70px}
   .card-tags{display:flex;gap:5px;flex-wrap:wrap}
   .tag{font-size:10px;font-family:'Space Mono',monospace;padding:3px 8px;border-radius:2px;border:1px solid #1a2230;color:#5a6a7a;background:rgba(255,255,255,.04)}
   .tag.hl{background:rgba(0,200,255,.08);border-color:rgba(0,200,255,.2);color:#00e5ff}
-  .card-badge{position:absolute;top:12px;right:12px;font-size:9px;font-family:'Space Mono',monospace;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:2px}
-  .badge-free{background:rgba(0,200,150,.12);color:#00c896;border:1px solid rgba(0,200,150,.25)}
+
+  .card-badges{position:absolute;top:10px;right:10px;display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+  .card-badge{font-size:9px;font-family:'Space Mono',monospace;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:2px}
+  .badge-free{background:rgba(0,200,150,.15);color:#00c896;border:1px solid rgba(0,200,150,.35)}
   .badge-freemium{background:rgba(162,89,255,.12);color:#a259ff;border:1px solid rgba(162,89,255,.2)}
-  .badge-paid{background:rgba(255,184,0,.12);color:#ffb800;border:1px solid rgba(255,184,0,.2)}
+  .badge-new{background:rgba(255,184,0,.12);color:#ffb800;border:1px solid rgba(255,184,0,.2)}
+
   .card-admin{position:absolute;bottom:12px;right:12px;display:none;gap:4px}
   .admin-mode .card-admin{display:flex}
   .admin-mode .card-desc{padding-right:16px}
@@ -92,16 +97,13 @@
   .btn-mini.edit{background:rgba(0,229,255,.1);border-color:rgba(0,229,255,.3);color:#00e5ff}
   .btn-mini.del{background:rgba(255,61,113,.1);border-color:rgba(255,61,113,.3);color:#ff3d71}
 
-  /* ADD CARD BTN */
   .add-card{border:2px dashed rgba(128,128,128,.2);border-radius:8px;padding:20px;background:transparent;color:rgba(128,128,128,.5);cursor:pointer;font-size:14px;font-family:'Syne',sans-serif;font-weight:700;transition:all .2s;width:100%;text-align:center;display:none}
   .admin-mode .add-card{display:block}
 
-  /* EMPTY */
   #empty{display:none;text-align:center;padding:80px 0;color:#5a6a7a}
   #empty.show{display:block}
   #empty p{font-size:48px;margin-bottom:16px}
 
-  /* INSTALL BANNER */
   #install-banner{display:none;align-items:center;gap:12px;background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.2);border-radius:8px;padding:12px 16px;margin:0 0 24px;flex-wrap:wrap}
   #install-banner.show{display:flex}
   .install-text{flex:1;font-size:13px;color:#a0b0c0;min-width:160px}
@@ -109,12 +111,10 @@
   .btn-install{background:#00e5ff;color:#080c10;border:none;padding:8px 16px;border-radius:4px;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap}
   .btn-install-dismiss{background:none;border:1px solid #1a2230;color:#5a6a7a;padding:8px 12px;border-radius:4px;font-family:'Syne',sans-serif;font-size:12px;cursor:pointer}
 
-  /* FOOTER */
-  footer{text-align:center;padding:40px 0 max(20px, env(safe-area-inset-bottom));color:#2a3a4a;font-family:'Space Mono',monospace;font-size:11px;border-top:1px solid #1a2230;margin-top:40px}
+  footer{text-align:center;padding:40px 0 max(20px,env(safe-area-inset-bottom));color:#2a3a4a;font-family:'Space Mono',monospace;font-size:11px;border-top:1px solid #1a2230;margin-top:40px}
   #admin-toggle{background:none;border:1px solid #1a2230;color:#2a3a4a;padding:8px 20px;border-radius:4px;cursor:pointer;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1px;transition:all .2s;margin-bottom:12px}
   #admin-toggle:hover{color:#5a6a7a;border-color:#2a3a4a}
 
-  /* MODAL */
   .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:1000;display:none;align-items:center;justify-content:center;padding:16px}
   .modal-overlay.show{display:flex}
   .modal-box{background:#0e1318;border:1px solid #1a2230;border-radius:12px;padding:24px;width:100%;max-width:500px;max-height:90vh;overflow-y:auto;animation:fadeUp .3s ease}
@@ -142,7 +142,7 @@
   @media(max-width:600px){
     .ai-grid{grid-template-columns:1fr}
     .grid-2{grid-template-columns:1fr}
-    h1{font-size:42px}
+    h1{font-size:40px}
   }
 </style>
 </head>
@@ -153,25 +153,39 @@
 
 <div id="app">
   <header>
-    <div class="logo-tag">★ AI Universe Directory</div>
-    <h1>Todas as <span class="glow">IAs</span><br>em um lugar</h1>
-    <p class="subtitle">Diretório completo de ferramentas de inteligência artificial, organizadas por categoria.</p>
+    <div class="logo-tag">★ AI Universe • 2025–2026</div>
+    <h1>IAs <span class="glow">Gratuitas</span><br>em um lugar</h1>
+    <p class="subtitle">As melhores ferramentas de IA gratuitas e freemium, sempre atualizadas.</p>
+
     <div class="search-wrap">
       <span class="search-icon">⌕</span>
       <input type="search" id="search" placeholder="Buscar IA, empresa ou categoria..." autocomplete="off">
       <button class="search-clear" id="search-clear">✕</button>
     </div>
+
+    <!-- TOGGLE SÓ 100% GRÁTIS -->
+    <div class="free-toggle-wrap">
+      <label>
+        <div class="toggle">
+          <input type="checkbox" id="only-free">
+          <span class="slider"></span>
+        </div>
+        Mostrar só 100% Grátis
+      </label>
+      <span class="free-count" id="free-count"></span>
+    </div>
+
     <div class="stats">
       <div class="stat"><span class="stat-num" id="total-num">0</span><span class="stat-label">Ferramentas</span></div>
+      <div class="stat"><span class="stat-num" id="free-num">0</span><span class="stat-label">100% Grátis</span></div>
       <div class="stat"><span class="stat-num" id="cat-num">0</span><span class="stat-label">Categorias</span></div>
-      <div class="stat"><span class="stat-num">2025</span><span class="stat-label">Atualizado</span></div>
     </div>
   </header>
 
   <div id="install-banner">
     <div class="install-text">
       <strong>📲 Instalar no celular</strong>
-      Adicione à tela inicial para acesso rápido — funciona offline!
+      Adicione à tela inicial — funciona offline!
     </div>
     <button class="btn-install" id="btn-install-pwa">Instalar App</button>
     <button class="btn-install-dismiss" id="btn-dismiss-banner">✕</button>
@@ -198,7 +212,7 @@
   <p id="footer-text"></p>
 </footer>
 
-<!-- MODAL ADMIN LOGIN -->
+<!-- MODAL LOGIN -->
 <div class="modal-overlay" id="modal-login">
   <div class="modal-box" style="max-width:360px">
     <div class="modal-header">
@@ -214,7 +228,7 @@
   </div>
 </div>
 
-<!-- MODAL TOOL FORM -->
+<!-- MODAL TOOL -->
 <div class="modal-overlay" id="modal-tool">
   <div class="modal-box">
     <div class="modal-header">
@@ -234,12 +248,18 @@
     <div class="grid-2">
       <div class="field"><label>Preço</label>
         <select id="f-price">
-          <option value="free">Grátis</option>
+          <option value="free">100% Grátis</option>
           <option value="freemium" selected>Freemium</option>
-          <option value="paid">Pago</option>
         </select>
       </div>
       <div class="field"><label>Categoria</label><select id="f-cat"></select></div>
+    </div>
+    <div class="field">
+      <label>É novidade? (2025–2026)</label>
+      <select id="f-new">
+        <option value="">Não</option>
+        <option value="1">Sim — exibir badge NOVO</option>
+      </select>
     </div>
     <input type="hidden" id="f-id">
     <div class="modal-btns">
@@ -249,7 +269,7 @@
   </div>
 </div>
 
-<!-- MODAL CAT FORM -->
+<!-- MODAL CAT -->
 <div class="modal-overlay" id="modal-cat">
   <div class="modal-box" style="max-width:400px">
     <div class="modal-header">
@@ -276,87 +296,125 @@
 
 <script>
 // ─── DATA ─────────────────────────────────────────────────────────────────────
-const STORAGE_KEY = "ai-universe-v3";
+const STORAGE_KEY = "ai-universe-v4";
+
+// price: "free" = 100% grátis | "freemium" = plano grátis + pago
+// isNew: true = badge NOVO (lançado/destacado em 2025-2026)
 const INITIAL = [
   { id:"chat", name:"Chat & Texto", icon:"💬", color:"#00e5ff", tools:[
-    { id:"chatgpt", name:"ChatGPT", maker:"OpenAI", desc:"Modelo de linguagem conversacional mais popular do mundo.", emoji:"🤖", tags:["GPT-4o","plugins","memória"], price:"freemium", url:"https://chat.openai.com" },
-    { id:"claude", name:"Claude", maker:"Anthropic", desc:"IA segura e útil com grande janela de contexto e raciocínio avançado.", emoji:"🌟", tags:["200k tokens","documentos","seguro"], price:"freemium", url:"https://claude.ai" },
-    { id:"gemini", name:"Gemini", maker:"Google", desc:"IA multimodal do Google integrada ao ecossistema Workspace.", emoji:"♊", tags:["multimodal","Google","código"], price:"freemium", url:"https://gemini.google.com" },
-    { id:"copilot", name:"Copilot", maker:"Microsoft", desc:"Assistente IA integrado ao Windows, Edge e Office 365.", emoji:"🪟", tags:["Office","Windows","Bing"], price:"freemium", url:"https://copilot.microsoft.com" },
-    { id:"mistral-chat", name:"Mistral Le Chat", maker:"Mistral AI", desc:"Chat europeu com modelos de última geração open-source.", emoji:"🌊", tags:["europeu","open","rápido"], price:"freemium", url:"https://chat.mistral.ai" },
-    { id:"perplexity", name:"Perplexity", maker:"Perplexity AI", desc:"Motor de busca com IA que cita fontes em tempo real.", emoji:"🔮", tags:["busca","fontes","tempo real"], price:"freemium", url:"https://perplexity.ai" },
-    { id:"grok", name:"Grok", maker:"xAI", desc:"IA do Elon Musk com acesso ao X/Twitter em tempo real.", emoji:"⚡", tags:["X/Twitter","tempo real","humor"], price:"paid", url:"https://grok.x.ai" },
-    { id:"meta-ai", name:"Meta AI", maker:"Meta", desc:"IA do Facebook integrada ao WhatsApp, Instagram e Messenger.", emoji:"👤", tags:["WhatsApp","Instagram","social"], price:"free", url:"https://meta.ai" },
-    { id:"pi", name:"Pi", maker:"Inflection AI", desc:"IA conversacional com foco em bem-estar emocional.", emoji:"π", tags:["emocional","apoio","pessoal"], price:"free", url:"https://pi.ai" },
-    { id:"poe", name:"Poe", maker:"Quora", desc:"Plataforma com acesso a dezenas de IAs em um só lugar.", emoji:"📚", tags:["multi-modelo","GPT","Claude"], price:"freemium", url:"https://poe.com" },
+    { id:"chatgpt",     name:"ChatGPT",         maker:"OpenAI",        desc:"O chatbot mais popular do mundo. GPT-4o grátis, memória persistente e acesso a ferramentas.",              emoji:"🤖", tags:["GPT-4o","memória","plugins"],       price:"freemium", url:"https://chat.openai.com" },
+    { id:"claude",      name:"Claude",           maker:"Anthropic",     desc:"IA com raciocínio avançado, leitura de documentos longos e alta precisão em tarefas complexas.",           emoji:"🌟", tags:["200k tokens","documentos","seguro"], price:"freemium", url:"https://claude.ai" },
+    { id:"gemini",      name:"Gemini",           maker:"Google",        desc:"IA multimodal do Google integrada ao Gmail, Docs e Drive. Gemini 2.0 Flash disponível grátis.",            emoji:"♊", tags:["multimodal","Google","Gemini 2.0"],  price:"freemium", url:"https://gemini.google.com", isNew:true },
+    { id:"deepseek",    name:"DeepSeek",         maker:"DeepSeek AI",   desc:"Modelo chinês open-source com desempenho rival ao GPT-4 — e totalmente gratuito. Sensação de 2025.",      emoji:"🐋", tags:["open-source","raciocínio","grátis"], price:"free",     url:"https://chat.deepseek.com", isNew:true },
+    { id:"meta-ai",     name:"Meta AI",          maker:"Meta",          desc:"IA gratuita integrada ao WhatsApp, Instagram e Messenger. Llama 4 por baixo.",                            emoji:"👤", tags:["WhatsApp","Instagram","Llama 4"],    price:"free",     url:"https://meta.ai", isNew:true },
+    { id:"copilot",     name:"Microsoft Copilot",maker:"Microsoft",     desc:"Assistente IA gratuito com GPT-4o, geração de imagens DALL·E e integração com o Edge.",                   emoji:"🪟", tags:["GPT-4o","DALL·E","grátis"],         price:"free",     url:"https://copilot.microsoft.com" },
+    { id:"mistral",     name:"Mistral Le Chat",  maker:"Mistral AI",    desc:"Chat europeu com modelos de ponta open-source. Rápido, privado e com plano grátis generoso.",             emoji:"🌊", tags:["europeu","open-source","rápido"],   price:"freemium", url:"https://chat.mistral.ai" },
+    { id:"perplexity",  name:"Perplexity",       maker:"Perplexity AI", desc:"Buscador com IA que responde com fontes citadas em tempo real. Melhor que Google para pesquisas.",         emoji:"🔮", tags:["busca","fontes","tempo real"],       price:"freemium", url:"https://perplexity.ai" },
+    { id:"grok",        name:"Grok",             maker:"xAI",           desc:"IA do Elon Musk com acesso ao X/Twitter em tempo real. Grok 3 gratuito com limite diário.",                emoji:"⚡", tags:["X/Twitter","tempo real","Grok 3"],  price:"freemium", url:"https://grok.com", isNew:true },
+    { id:"huggingchat", name:"HuggingChat",      maker:"Hugging Face",  desc:"Acesso gratuito a dezenas de modelos open-source: Llama, Mistral, Gemma e outros.",                       emoji:"🤗", tags:["open-source","multi-modelo","grátis"],price:"free",   url:"https://huggingface.co/chat", isNew:true },
+    { id:"aistudio",    name:"Google AI Studio", maker:"Google",        desc:"Acesso gratuito e ilimitado à API do Gemini 2.0 Flash. Ideal para testes e experimentação.",              emoji:"🔬", tags:["API grátis","Gemini","dev"],         price:"free",     url:"https://aistudio.google.com", isNew:true },
+    { id:"groq",        name:"Groq",             maker:"Groq",          desc:"Inferência ultra-rápida de modelos open-source (Llama, Gemma). O mais veloz do mercado, grátis.",          emoji:"⚡", tags:["velocidade","Llama","API grátis"],   price:"free",     url:"https://groq.com", isNew:true },
+    { id:"pi",          name:"Pi",               maker:"Inflection AI", desc:"IA conversacional com foco em bem-estar emocional e apoio pessoal. 100% gratuita.",                       emoji:"π", tags:["emocional","apoio","pessoal"],       price:"free",     url:"https://pi.ai" },
+    { id:"poe",         name:"Poe",              maker:"Quora",         desc:"Plataforma com acesso a GPT-4o, Claude, Gemini e outros modelos em um único app.",                         emoji:"📚", tags:["multi-modelo","GPT","Claude"],       price:"freemium", url:"https://poe.com" },
+    { id:"qwen",        name:"Qwen Chat",        maker:"Alibaba",       desc:"Modelo chinês open-source da Alibaba com excelente desempenho multilíngue e em código.",                   emoji:"🧠", tags:["open-source","multilíngue","grátis"],price:"free",    url:"https://chat.qwen.ai", isNew:true },
   ]},
+
   { id:"imagem", name:"Geração de Imagens", icon:"🎨", color:"#ff3d71", tools:[
-    { id:"midjourney", name:"Midjourney", maker:"Midjourney", desc:"O padrão ouro para geração de imagens artísticas de alta qualidade.", emoji:"🖼️", tags:["artístico","Discord","v6"], price:"paid", url:"https://midjourney.com" },
-    { id:"dalle3", name:"DALL·E 3", maker:"OpenAI", desc:"Geração de imagens integrada ao ChatGPT com alta fidelidade ao texto.", emoji:"🎭", tags:["ChatGPT","texto-fiel","fácil"], price:"freemium", url:"https://openai.com/dall-e" },
-    { id:"stablediffusion", name:"Stable Diffusion", maker:"Stability AI", desc:"Modelo open-source para geração de imagens, rodável localmente.", emoji:"🌀", tags:["open-source","local","gratuito"], price:"free", url:"https://stability.ai" },
-    { id:"firefly", name:"Adobe Firefly", maker:"Adobe", desc:"IA da Adobe integrada ao Creative Suite, segura para uso comercial.", emoji:"🔥", tags:["Adobe","comercial","Photoshop"], price:"freemium", url:"https://firefly.adobe.com" },
-    { id:"ideogram", name:"Ideogram", maker:"Ideogram", desc:"Especializado em texto legível dentro de imagens geradas.", emoji:"✍️", tags:["texto","tipografia","logos"], price:"freemium", url:"https://ideogram.ai" },
-    { id:"leonardo", name:"Leonardo AI", maker:"Leonardo AI", desc:"Plataforma para criação de ativos visuais para games e design.", emoji:"🦁", tags:["games","assets","personagens"], price:"freemium", url:"https://leonardo.ai" },
-    { id:"flux", name:"Flux", maker:"Black Forest Labs", desc:"Modelo state-of-the-art para realismo fotográfico excepcional.", emoji:"⚡", tags:["realismo","fotografia","rápido"], price:"freemium", url:"https://blackforestlabs.ai" },
-    { id:"playground", name:"Playground AI", maker:"Playground", desc:"Criação de imagens com modelos variados e interface intuitiva.", emoji:"🛝", tags:["gratuito","modelos","versátil"], price:"freemium", url:"https://playground.com" },
+    { id:"imagine-meta",name:"Imagine Meta",     maker:"Meta",          desc:"Geração de imagens com IA 100% gratuita powered by Meta. Integrado ao WhatsApp e Instagram.",             emoji:"🖼️", tags:["grátis","WhatsApp","Meta"],         price:"free",     url:"https://imagine.meta.com", isNew:true },
+    { id:"copilot-img", name:"Copilot Image",    maker:"Microsoft",     desc:"Gera imagens com DALL·E 3 gratuitamente direto no Copilot do Microsoft.",                                 emoji:"🎭", tags:["DALL·E 3","grátis","fácil"],        price:"free",     url:"https://copilot.microsoft.com" },
+    { id:"ideogram",    name:"Ideogram",         maker:"Ideogram",      desc:"Especialista em texto legível dentro de imagens. Versão 3.0 com qualidade fotorrealista. Grátis.",         emoji:"✍️", tags:["texto","logos","v3.0"],             price:"freemium", url:"https://ideogram.ai", isNew:true },
+    { id:"leonardo",    name:"Leonardo AI",      maker:"Leonardo AI",   desc:"Plataforma com créditos diários gratuitos para criação de imagens, personagens e assets.",                 emoji:"🦁", tags:["créditos grátis","personagens","assets"],price:"freemium",url:"https://leonardo.ai" },
+    { id:"flux",        name:"Flux (Freepik)",   maker:"Black Forest Labs",desc:"Modelo Flux.1 disponível gratuitamente no Freepik AI. Realismo fotográfico excepcional.",              emoji:"⚡", tags:["realismo","Freepik","fotografia"],   price:"freemium", url:"https://www.freepik.com/ai/image-generator", isNew:true },
+    { id:"playground",  name:"Playground AI",    maker:"Playground",    desc:"Criação de imagens grátis com modelos variados e interface simples e rápida.",                             emoji:"🛝", tags:["grátis","modelos","versátil"],       price:"freemium", url:"https://playground.com" },
+    { id:"stablediff",  name:"Stable Diffusion", maker:"Stability AI",  desc:"Modelo open-source que pode ser rodado localmente no seu computador, sem limites.",                        emoji:"🌀", tags:["open-source","local","ilimitado"],   price:"free",     url:"https://stability.ai" },
+    { id:"tensor",      name:"Tensor.art",       maker:"Tensor.art",    desc:"Plataforma gratuita com Stable Diffusion e LoRAs da comunidade. Créditos diários grátis.",                 emoji:"🎨", tags:["comunidade","LoRA","grátis"],        price:"free",     url:"https://tensor.art", isNew:true },
+    { id:"canva-img",   name:"Canva AI Image",   maker:"Canva",         desc:"Geração de imagens com IA dentro do Canva. Magic Media grátis com conta básica.",                         emoji:"🖌️", tags:["fácil","templates","grátis"],       price:"freemium", url:"https://canva.com" },
+    { id:"adobe-ff",    name:"Adobe Firefly",    maker:"Adobe",         desc:"Geração de imagens segura para uso comercial. 25 gerações gratuitas por mês.",                             emoji:"🔥", tags:["comercial","Adobe","25/mês"],        price:"freemium", url:"https://firefly.adobe.com" },
   ]},
+
   { id:"video", name:"Geração de Vídeo", icon:"🎬", color:"#a259ff", tools:[
-    { id:"sora", name:"Sora", maker:"OpenAI", desc:"Gerador de vídeo revolucionário do OpenAI com qualidade cinematográfica.", emoji:"🎞️", tags:["realismo","longo","OpenAI"], price:"paid", url:"https://sora.com" },
-    { id:"runway", name:"Runway Gen-3", maker:"Runway", desc:"Líder em geração e edição de vídeo com IA para criadores.", emoji:"🚀", tags:["edição","criadores","efeitos"], price:"freemium", url:"https://runwayml.com" },
-    { id:"kling", name:"Kling AI", maker:"Kuaishou", desc:"Geração de vídeo com movimentos realistas e física convincente.", emoji:"🎭", tags:["realismo","movimento","física"], price:"freemium", url:"https://klingai.com" },
-    { id:"hailuo", name:"Hailuo AI", maker:"MiniMax", desc:"Gerador de vídeos de alta qualidade com opções gratuitas.", emoji:"🌊", tags:["grátis","HD","rápido"], price:"freemium", url:"https://hailuoai.com" },
-    { id:"luma", name:"Luma Dream Machine", maker:"Luma AI", desc:"Geração de vídeos realistas a partir de texto ou imagens.", emoji:"💫", tags:["texto-para-vídeo","imagem","realismo"], price:"freemium", url:"https://lumalabs.ai" },
-    { id:"pika", name:"Pika Labs", maker:"Pika", desc:"Geração e edição de vídeos com controles criativos avançados.", emoji:"🐾", tags:["edição","efeitos","criativo"], price:"freemium", url:"https://pika.art" },
-    { id:"heygen", name:"HeyGen", maker:"HeyGen", desc:"Avatares com IA para vídeos de apresentação e marketing.", emoji:"👤", tags:["avatar","apresentação","marketing"], price:"freemium", url:"https://heygen.com" },
-    { id:"synthesia", name:"Synthesia", maker:"Synthesia", desc:"Vídeos com apresentadores virtuais em mais de 120 idiomas.", emoji:"🎤", tags:["apresentador","120 idiomas","empresas"], price:"paid", url:"https://synthesia.io" },
+    { id:"hailuo",    name:"Hailuo AI",       maker:"MiniMax",   desc:"Gerador de vídeos de alta qualidade com plano gratuito. Um dos melhores custo-benefício de 2025.",         emoji:"🌊", tags:["grátis","HD","realismo"],          price:"freemium", url:"https://hailuoai.com", isNew:true },
+    { id:"luma",      name:"Luma Dream Machine",maker:"Luma AI", desc:"Geração de vídeos realistas a partir de texto ou imagens. Plano gratuito com gerações mensais.",           emoji:"💫", tags:["texto-para-vídeo","imagem","grátis"],price:"freemium",url:"https://lumalabs.ai" },
+    { id:"kling",     name:"Kling AI",        maker:"Kuaishou",  desc:"Vídeos com movimentos realistas e física convincente. Plano gratuito com créditos diários.",              emoji:"🎭", tags:["realismo","créditos grátis","física"],price:"freemium",url:"https://klingai.com", isNew:true },
+    { id:"runway",    name:"Runway Gen-4",    maker:"Runway",    desc:"Líder em geração e edição de vídeo com IA. Gen-4 com controle de câmera e consistência de personagens.",   emoji:"🚀", tags:["Gen-4","câmera","edição"],          price:"freemium", url:"https://runwayml.com", isNew:true },
+    { id:"pika",      name:"Pika 2.0",        maker:"Pika",      desc:"Geração e edição de vídeos com efeitos criativos. Pika 2.0 com qualidade cinematográfica.",                emoji:"🐾", tags:["v2.0","efeitos","grátis"],          price:"freemium", url:"https://pika.art", isNew:true },
+    { id:"capcut-ai", name:"CapCut AI",       maker:"ByteDance", desc:"Editor de vídeo com IA totalmente gratuito. Remove fundo, legendas automáticas e avatar IA.",             emoji:"✂️", tags:["edição","legendas","grátis"],       price:"free",     url:"https://capcut.com", isNew:true },
+    { id:"vidu",      name:"Vidu",            maker:"Shengshu",  desc:"Gerador de vídeos de alta qualidade com personagens consistentes. Novo concorrente de 2025.",              emoji:"🎥", tags:["personagens","HD","novo"],           price:"freemium", url:"https://vidu.studio", isNew:true },
   ]},
+
   { id:"audio", name:"Áudio & Música & Voz", icon:"🎵", color:"#00c896", tools:[
-    { id:"suno", name:"Suno AI", maker:"Suno", desc:"Cria músicas completas com vocais a partir de uma descrição em texto.", emoji:"🎵", tags:["música","vocais","completa"], price:"freemium", url:"https://suno.com" },
-    { id:"udio", name:"Udio", maker:"Udio", desc:"Geração de música de alta qualidade com variados gêneros e estilos.", emoji:"🎶", tags:["música","gêneros","qualidade"], price:"freemium", url:"https://udio.com" },
-    { id:"elevenlabs", name:"ElevenLabs", maker:"ElevenLabs", desc:"Síntese de voz ultra-realista com clonagem de voz e 29 idiomas.", emoji:"🎤", tags:["voz","clonagem","29 idiomas"], price:"freemium", url:"https://elevenlabs.io" },
-    { id:"murf", name:"Murf AI", maker:"Murf", desc:"Narração profissional com mais de 120 vozes em 20 idiomas.", emoji:"🔊", tags:["narração","120 vozes","profissional"], price:"freemium", url:"https://murf.ai" },
-    { id:"soundraw", name:"Soundraw", maker:"Soundraw", desc:"Geração de músicas royalty-free personalizáveis para criadores.", emoji:"🎸", tags:["royalty-free","personalizável","criadores"], price:"freemium", url:"https://soundraw.io" },
-    { id:"aiva", name:"AIVA", maker:"AIVA", desc:"Composição musical com IA para trilhas de filmes, games e mídia.", emoji:"🎼", tags:["composição","trilhas","clássico"], price:"freemium", url:"https://aiva.ai" },
-    { id:"otter", name:"Otter.ai", maker:"Otter", desc:"Transcrição e resumo automático de reuniões e entrevistas.", emoji:"🦦", tags:["reuniões","transcrição","resumo"], price:"freemium", url:"https://otter.ai" },
+    { id:"suno",      name:"Suno AI",     maker:"Suno",      desc:"Cria músicas completas com vocais em segundos. Plano gratuito com 50 músicas por dia.",                   emoji:"🎵", tags:["música","vocais","50/dia"],         price:"freemium", url:"https://suno.com" },
+    { id:"udio",      name:"Udio",        maker:"Udio",      desc:"Geração de música de altíssima qualidade. Plano gratuito com créditos diários generosos.",                 emoji:"🎶", tags:["música","gêneros","grátis"],        price:"freemium", url:"https://udio.com" },
+    { id:"elevenlabs",name:"ElevenLabs",  maker:"ElevenLabs",desc:"Síntese de voz ultra-realista com clonagem de voz em 29 idiomas. Plano gratuito disponível.",              emoji:"🎤", tags:["voz","clonagem","29 idiomas"],      price:"freemium", url:"https://elevenlabs.io" },
+    { id:"adobepod",  name:"Adobe Podcast",maker:"Adobe",    desc:"Remove ruído de fundo e melhora áudio de microfones ruins com IA. 100% gratuito.",                        emoji:"🎙️", tags:["ruído","microfone","grátis"],      price:"free",     url:"https://podcast.adobe.com", isNew:true },
+    { id:"whisper",   name:"Whisper",     maker:"OpenAI",    desc:"Transcrição de áudio open-source do OpenAI com precisão excepcional em português.",                        emoji:"🦻", tags:["transcrição","open-source","PT-BR"],price:"free",     url:"https://github.com/openai/whisper" },
+    { id:"soundraw",  name:"Soundraw",    maker:"Soundraw",  desc:"Geração de músicas royalty-free personalizáveis para vídeos e podcasts.",                                  emoji:"🎸", tags:["royalty-free","vídeos","podcast"],   price:"freemium", url:"https://soundraw.io" },
+    { id:"aiva",      name:"AIVA",        maker:"AIVA",      desc:"Composição musical com IA para trilhas de filmes e games. Plano gratuito com 3 downloads/mês.",            emoji:"🎼", tags:["composição","trilhas","3/mês"],      price:"freemium", url:"https://aiva.ai" },
+    { id:"otter",     name:"Otter.ai",    maker:"Otter",     desc:"Transcrição e resumo automático de reuniões e entrevistas. 300 minutos grátis por mês.",                   emoji:"🦦", tags:["reuniões","300 min","transcrição"],  price:"freemium", url:"https://otter.ai" },
   ]},
+
   { id:"codigo", name:"Código & Dev", icon:"💻", color:"#ffb800", tools:[
-    { id:"copilot-gh", name:"GitHub Copilot", maker:"GitHub/Microsoft", desc:"Autocomplete de código em tempo real integrado ao VS Code e IDEs.", emoji:"🐙", tags:["VS Code","autocomplete","70 linguagens"], price:"paid", url:"https://github.com/features/copilot" },
-    { id:"cursor", name:"Cursor", maker:"Anysphere", desc:"IDE com IA nativa que entende todo o codebase para editar e gerar.", emoji:"⌨️", tags:["IDE","codebase","refatoração"], price:"freemium", url:"https://cursor.sh" },
-    { id:"claude-code", name:"Claude Code", maker:"Anthropic", desc:"Agente de coding no terminal que executa, testa e refatora código.", emoji:"🖥️", tags:["terminal","agente","execução"], price:"paid", url:"https://claude.ai/code" },
-    { id:"replit", name:"Replit AI", maker:"Replit", desc:"Desenvolvimento completo com IA no browser, do zero ao deploy.", emoji:"♾️", tags:["browser","deploy","colaboração"], price:"freemium", url:"https://replit.com" },
-    { id:"v0", name:"v0", maker:"Vercel", desc:"Gera componentes React/UI prontos a partir de descrições em texto.", emoji:"▲", tags:["React","UI","Vercel"], price:"freemium", url:"https://v0.dev" },
-    { id:"bolt", name:"Bolt.new", maker:"StackBlitz", desc:"Cria apps web completos com IA e faz deploy com um clique.", emoji:"⚡", tags:["apps","deploy","full-stack"], price:"freemium", url:"https://bolt.new" },
-    { id:"lovable", name:"Lovable", maker:"Lovable", desc:"Cria apps web completos apenas descrevendo o que você quer.", emoji:"❤️", tags:["no-code","apps","rápido"], price:"freemium", url:"https://lovable.dev" },
-    { id:"windsurf", name:"Windsurf", maker:"Codeium", desc:"IDE com agente de IA que navega e edita arquivos de forma autônoma.", emoji:"🏄", tags:["IDE","agente","autônomo"], price:"freemium", url:"https://codeium.com/windsurf" },
+    { id:"cursor",    name:"Cursor",       maker:"Anysphere", desc:"IDE com IA nativa que entende todo o projeto. 2 semanas grátis + plano hobby. O preferido dos devs em 2025.", emoji:"⌨️", tags:["IDE","codebase","Claude/GPT"],    price:"freemium", url:"https://cursor.sh", isNew:true },
+    { id:"codeium",   name:"Codeium",      maker:"Codeium",   desc:"Autocomplete de código gratuito para sempre em 70+ linguagens. Alternativa grátis ao Copilot.",              emoji:"⚡", tags:["grátis","70 linguagens","VS Code"], price:"free",     url:"https://codeium.com" },
+    { id:"replit",    name:"Replit AI",    maker:"Replit",    desc:"Desenvolvimento completo com IA no browser: coda, testa e faz deploy. Plano gratuito robusto.",              emoji:"♾️", tags:["browser","deploy","grátis"],       price:"freemium", url:"https://replit.com" },
+    { id:"v0",        name:"v0",           maker:"Vercel",    desc:"Gera interfaces React/Tailwind prontas a partir de descrição em texto. Plano gratuito generoso.",             emoji:"▲", tags:["React","Tailwind","UI"],           price:"freemium", url:"https://v0.dev", isNew:true },
+    { id:"bolt",      name:"Bolt.new",     maker:"StackBlitz",desc:"Cria apps web completos com IA (frontend + backend) e faz deploy em segundos. Grátis com limites.",          emoji:"⚡", tags:["full-stack","deploy","grátis"],     price:"freemium", url:"https://bolt.new", isNew:true },
+    { id:"lovable",   name:"Lovable",      maker:"Lovable",   desc:"Descreva seu app e ele constrói. Integração com Supabase e deploy automático. Plano gratuito.",               emoji:"❤️", tags:["no-code","Supabase","app"],        price:"freemium", url:"https://lovable.dev", isNew:true },
+    { id:"windsurf",  name:"Windsurf",     maker:"Codeium",   desc:"IDE com agente IA Cascade que navega e edita arquivos autonomamente. Plano gratuito generoso.",               emoji:"🏄", tags:["IDE","agente","autônomo"],          price:"freemium", url:"https://codeium.com/windsurf", isNew:true },
+    { id:"aider",     name:"Aider",        maker:"Aider",     desc:"Agente de código open-source no terminal. Usa qualquer modelo (Claude, GPT, DeepSeek).",                     emoji:"🖥️", tags:["terminal","open-source","grátis"], price:"free",     url:"https://aider.chat", isNew:true },
   ]},
+
+  { id:"pesquisa", name:"Pesquisa & Estudo", icon:"📚", color:"#4fc3f7", tools:[
+    { id:"notebooklm", name:"NotebookLM",   maker:"Google",       desc:"IA que aprende com SEUS documentos: PDFs, vídeos do YouTube, slides. Gera podcasts e resumos. Grátis.",  emoji:"📓", tags:["PDF","YouTube","podcast IA"],      price:"free",     url:"https://notebooklm.google.com", isNew:true },
+    { id:"perplexity2",name:"Perplexity",   maker:"Perplexity AI",desc:"Buscador com IA que cita fontes em tempo real. Melhor que Google para pesquisas acadêmicas.",             emoji:"🔮", tags:["busca","fontes","acadêmico"],       price:"freemium", url:"https://perplexity.ai" },
+    { id:"consensus",  name:"Consensus",    maker:"Consensus",    desc:"Busca em milhões de artigos científicos com IA. Resume evidências de pesquisas acadêmicas.",              emoji:"🔬", tags:["científico","artigos","grátis"],    price:"freemium", url:"https://consensus.app", isNew:true },
+    { id:"elicit",     name:"Elicit",       maker:"Ought",        desc:"Automatiza revisão de literatura científica com IA. Extrai dados de papers automaticamente.",              emoji:"📊", tags:["literatura","papers","extração"],   price:"freemium", url:"https://elicit.com" },
+    { id:"youcom",     name:"You.com",      maker:"You.com",      desc:"Buscador com IA, geração de imagens e assistente integrados. Alternativa ao Google com mais privacidade.", emoji:"🔍", tags:["busca","privacidade","imagens"],    price:"freemium", url:"https://you.com" },
+    { id:"khanmigo",   name:"Khanmigo",     maker:"Khan Academy", desc:"Tutor de IA da Khan Academy para aprender qualquer matéria de forma interativa.",                          emoji:"🎓", tags:["educação","tutoria","grátis"],      price:"free",     url:"https://khanacademy.org/khan-labs", isNew:true },
+  ]},
+
   { id:"agentes", name:"Agentes & Automação", icon:"🤖", color:"#ff7a00", tools:[
-    { id:"n8n", name:"n8n", maker:"n8n GmbH", desc:"Automação de workflows com IA e centenas de integrações.", emoji:"🔗", tags:["workflows","integrações","self-hosted"], price:"freemium", url:"https://n8n.io" },
-    { id:"zapier", name:"Zapier AI", maker:"Zapier", desc:"Automação inteligente conectando 6000+ apps com IA.", emoji:"⚡", tags:["6000 apps","no-code","automação"], price:"freemium", url:"https://zapier.com" },
-    { id:"make", name:"Make", maker:"Make", desc:"Plataforma visual de automação com fluxos complexos e IA.", emoji:"🔧", tags:["visual","fluxos","integrações"], price:"freemium", url:"https://make.com" },
-    { id:"devin", name:"Devin", maker:"Cognition AI", desc:"O primeiro engenheiro de software IA completamente autônomo.", emoji:"👨‍💻", tags:["autônomo","engenheiro","código"], price:"paid", url:"https://cognition.ai" },
-    { id:"crewai", name:"CrewAI", maker:"CrewAI", desc:"Orquestra múltiplos agentes IA trabalhando em equipe.", emoji:"👥", tags:["multi-agente","equipes","tarefas"], price:"free", url:"https://crewai.com" },
-    { id:"lindy", name:"Lindy AI", maker:"Lindy", desc:"Cria assistentes pessoais IA para automação do trabalho.", emoji:"🤝", tags:["assistente","trabalho","automação"], price:"freemium", url:"https://lindy.ai" },
+    { id:"n8n",       name:"n8n",        maker:"n8n GmbH",    desc:"Automação de workflows com IA e 400+ integrações. Self-hosted gratuito ilimitado.",                        emoji:"🔗", tags:["workflows","self-hosted","grátis"], price:"free",     url:"https://n8n.io" },
+    { id:"make",      name:"Make",       maker:"Make",        desc:"Plataforma visual de automação com 1000 operações gratuitas por mês.",                                       emoji:"🔧", tags:["visual","1000 ops","grátis"],       price:"freemium", url:"https://make.com" },
+    { id:"zapier",    name:"Zapier AI",  maker:"Zapier",      desc:"Automação inteligente com IA. 100 tarefas gratuitas por mês conectando 6000+ apps.",                        emoji:"⚡", tags:["6000 apps","100 tarefas","fácil"],  price:"freemium", url:"https://zapier.com" },
+    { id:"crewai",    name:"CrewAI",     maker:"CrewAI",      desc:"Framework open-source para orquestrar múltiplos agentes IA trabalhando em equipe. 100% grátis.",             emoji:"👥", tags:["multi-agente","open-source","grátis"],price:"free",  url:"https://crewai.com" },
+    { id:"langflow",  name:"Langflow",   maker:"Langflow",    desc:"Interface visual para criar agentes e fluxos de IA com arrasta e solta. Open-source e grátis.",              emoji:"🌊", tags:["visual","open-source","agentes"],   price:"free",     url:"https://langflow.org", isNew:true },
+    { id:"dify",      name:"Dify",       maker:"Dify",        desc:"Plataforma open-source para criar apps de IA e chatbots personalizados. Self-hosted grátis.",                emoji:"🔮", tags:["chatbot","open-source","self-hosted"],price:"free",  url:"https://dify.ai", isNew:true },
   ]},
+
   { id:"escrita", name:"Escrita & Copywriting", icon:"✍️", color:"#ff6b6b", tools:[
-    { id:"jasper", name:"Jasper AI", maker:"Jasper", desc:"Geração de conteúdo de marketing com tom de voz personalizado.", emoji:"🖊️", tags:["marketing","tom de voz","blog"], price:"paid", url:"https://jasper.ai" },
-    { id:"copyai", name:"Copy.ai", maker:"Copy.ai", desc:"Geração de copies, emails e conteúdo de vendas com IA.", emoji:"📝", tags:["copies","emails","vendas"], price:"freemium", url:"https://copy.ai" },
-    { id:"grammarly", name:"Grammarly AI", maker:"Grammarly", desc:"Correção, reescrita e melhoria de textos com IA avançada.", emoji:"✅", tags:["correção","gramática","estilo"], price:"freemium", url:"https://grammarly.com" },
-    { id:"notion-ai", name:"Notion AI", maker:"Notion", desc:"IA integrada ao Notion para resumir, redigir e organizar.", emoji:"📓", tags:["Notion","resumo","organização"], price:"paid", url:"https://notion.ai" },
-    { id:"rytr", name:"Rytr", maker:"Rytr", desc:"Geração de conteúdo em 30+ idiomas com múltiplos estilos.", emoji:"🖋️", tags:["30 idiomas","estilos","barato"], price:"freemium", url:"https://rytr.me" },
+    { id:"copyai",    name:"Copy.ai",      maker:"Copy.ai",   desc:"Geração de copies, emails e posts com IA. Plano gratuito com 2000 palavras por mês.",                       emoji:"📝", tags:["copies","emails","2000 palavras"],   price:"freemium", url:"https://copy.ai" },
+    { id:"grammarly", name:"Grammarly",    maker:"Grammarly", desc:"Correção de gramática, estilo e reescrita com IA. Versão gratuita muito completa.",                          emoji:"✅", tags:["correção","gramática","grátis"],     price:"freemium", url:"https://grammarly.com" },
+    { id:"quillbot",  name:"QuillBot",     maker:"QuillBot",  desc:"Paráfrase, resumo e correção com IA. Gratuito com limite diário generoso. Excelente para PT-BR.",            emoji:"✒️", tags:["paráfrase","resumo","PT-BR"],       price:"freemium", url:"https://quillbot.com" },
+    { id:"rytr",      name:"Rytr",         maker:"Rytr",      desc:"Geração de conteúdo em 30+ idiomas. Plano gratuito com 10.000 caracteres por mês.",                          emoji:"🖋️", tags:["30 idiomas","10k chars","grátis"],  price:"freemium", url:"https://rytr.me" },
+    { id:"wordtune",  name:"Wordtune",     maker:"AI21 Labs", desc:"Reescreve e melhora textos com IA. 10 reescritas gratuitas por dia.",                                        emoji:"🎯", tags:["reescrita","10/dia","grátis"],       price:"freemium", url:"https://wordtune.com" },
   ]},
-  { id:"design", name:"Design Visual", icon:"🖌️", color:"#e040fb", tools:[
-    { id:"canva", name:"Canva AI", maker:"Canva", desc:"Design assistido por IA com magic edit, geração e templates.", emoji:"🎨", tags:["templates","fácil","magic edit"], price:"freemium", url:"https://canva.com" },
-    { id:"figma-ai", name:"Figma AI", maker:"Figma", desc:"Recursos de IA integrados ao Figma para UI/UX design.", emoji:"✏️", tags:["UI/UX","prototipagem","design"], price:"freemium", url:"https://figma.com" },
-    { id:"looka", name:"Looka", maker:"Looka", desc:"Criação de logos e identidade visual completa com IA.", emoji:"🏷️", tags:["logo","identidade visual","branding"], price:"paid", url:"https://looka.com" },
-    { id:"removebg", name:"Remove.bg", maker:"Kaleido AI", desc:"Remoção automática de fundo de imagens em segundos.", emoji:"✂️", tags:["fundo","remoção","rápido"], price:"freemium", url:"https://remove.bg" },
-    { id:"uizard", name:"Uizard", maker:"Uizard", desc:"Transforma rascunhos e wireframes em protótipos de UI com IA.", emoji:"📱", tags:["wireframe","prototipagem","rápido"], price:"freemium", url:"https://uizard.io" },
+
+  { id:"design", name:"Design & Visual", icon:"🖌️", color:"#e040fb", tools:[
+    { id:"canva",     name:"Canva AI",     maker:"Canva",     desc:"Design assistido por IA com Magic Edit, geração e remoção de fundo. Plano gratuito robusto.",                emoji:"🎨", tags:["templates","Magic Edit","grátis"],  price:"freemium", url:"https://canva.com" },
+    { id:"removebg",  name:"Remove.bg",    maker:"Kaleido",   desc:"Remove fundo de imagens automaticamente em segundos. Resultado profissional, gratuito.",                     emoji:"✂️", tags:["fundo","remoção","grátis"],        price:"freemium", url:"https://remove.bg" },
+    { id:"freepik-ai",name:"Freepik AI",   maker:"Freepik",   desc:"Geração de imagens, vídeos e mockups com IA. Integrado ao maior banco de imagens grátis do mundo.",          emoji:"🖼️", tags:["imagens","vídeos","mockups"],      price:"freemium", url:"https://freepik.com/ai", isNew:true },
+    { id:"loovid",    name:"Gamma",        maker:"Gamma",     desc:"Cria apresentações, docs e páginas web com IA em segundos. Exporta em PDF. 10 criações grátis.",              emoji:"📊", tags:["apresentação","PDF","10 grátis"],   price:"freemium", url:"https://gamma.app", isNew:true },
+    { id:"uizard",    name:"Uizard",       maker:"Uizard",    desc:"Transforma rascunhos e wireframes em protótipos de UI com IA. Plano gratuito disponível.",                    emoji:"📱", tags:["wireframe","UI","prototipagem"],    price:"freemium", url:"https://uizard.io" },
+    { id:"autodraw",  name:"AutoDraw",     maker:"Google",    desc:"IA do Google que reconhece seus rabiscos e transforma em desenhos profissionais. 100% grátis.",               emoji:"✏️", tags:["desenho","rabisco","Google"],      price:"free",     url:"https://autodraw.com" },
+  ]},
+
+  { id:"produtividade", name:"Produtividade", icon:"⚡", color:"#69f0ae", tools:[
+    { id:"notionai",  name:"Notion AI",    maker:"Notion",    desc:"IA integrada ao Notion para resumir, redigir e organizar. Grátis com plano Plus (estudante).",               emoji:"📓", tags:["Notion","resumo","organização"],    price:"freemium", url:"https://notion.ai" },
+    { id:"mem",       name:"Mem AI",       maker:"Mem Labs",  desc:"Notas com IA que se organizam sozinhas e lembram de tudo que você escreveu.",                                 emoji:"🧠", tags:["notas","memória","organização"],    price:"freemium", url:"https://mem.ai" },
+    { id:"otterai2",  name:"Otter.ai",     maker:"Otter",     desc:"Transcrição e resumo automático de reuniões com IA. 300 minutos grátis por mês.",                             emoji:"🦦", tags:["reuniões","resumo","300 min"],      price:"freemium", url:"https://otter.ai" },
+    { id:"taskade",   name:"Taskade AI",   maker:"Taskade",   desc:"Gestão de projetos com agentes de IA integrados. Plano gratuito com 5 projetos.",                            emoji:"📋", tags:["projetos","agentes","grátis"],      price:"freemium", url:"https://taskade.com", isNew:true },
+    { id:"tldv",      name:"tl;dv",        maker:"tl;dv",     desc:"Grava, transcreve e resume reuniões do Google Meet e Zoom com IA. Plano gratuito ilimitado.",                 emoji:"📹", tags:["reuniões","Zoom","Meet"],          price:"free",     url:"https://tldv.io", isNew:true },
+    { id:"merlin",    name:"Merlin",        maker:"Merlin",    desc:"Extensão de navegador com ChatGPT, Claude e Gemini em qualquer site. 102 consultas grátis/dia.",              emoji:"🧙", tags:["extensão","navegador","102/dia"],   price:"freemium", url:"https://merlin.foyer.work", isNew:true },
   ]},
 ];
 
 // ─── STATE ────────────────────────────────────────────────────────────────────
+const STORAGE_KEY_DATA = "ai-universe-v4";
 let categories = [];
 let adminMode = false;
 let activeFilter = "all";
+let onlyFree = false;
 let editingToolId = null;
 let editingCatId = null;
 
@@ -364,31 +422,29 @@ function uid(){ return Math.random().toString(36).slice(2,9); }
 
 function load(){
   try{
-    const s = localStorage.getItem(STORAGE_KEY);
-    if(s){ const d = JSON.parse(s); if(d && d.length) return d; }
+    const s = localStorage.getItem(STORAGE_KEY_DATA);
+    if(s){ const d=JSON.parse(s); if(d&&d.length) return d; }
   }catch(e){}
   return JSON.parse(JSON.stringify(INITIAL));
 }
-
 function save(){
-  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(categories)); }catch(e){}
+  try{ localStorage.setItem(STORAGE_KEY_DATA, JSON.stringify(categories)); }catch(e){}
 }
-
 function resetData(){
   if(!confirm("Restaurar dados originais? Todas as edições serão perdidas.")) return;
   categories = JSON.parse(JSON.stringify(INITIAL));
   save(); render();
 }
 
-// ─── RENDER ───────────────────────────────────────────────────────────────────
+// ─── HELPERS ──────────────────────────────────────────────────────────────────
 function hexRgb(hex){
   if(!hex||hex.length<7) return "128,128,128";
   const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
   return `${r},${g},${b}`;
 }
+function priceLabel(p){ return {free:"100% Grátis",freemium:"Freemium"}[p]||p; }
 
-function priceLabel(p){ return {free:"Grátis",freemium:"Freemium",paid:"Pago"}[p]||p; }
-
+// ─── RENDER ───────────────────────────────────────────────────────────────────
 function renderFilters(){
   const q = document.getElementById("filters");
   const all = [{ id:"all", name:"Todas", icon:"✦", color:"#888888" }, ...categories];
@@ -400,6 +456,11 @@ function renderFilters(){
   `).join("");
 }
 
+function filterTool(tool){
+  if(onlyFree && tool.price !== "free") return false;
+  return true;
+}
+
 function renderContent(){
   const search = document.getElementById("search").value.toLowerCase().trim();
   const content = document.getElementById("content");
@@ -409,15 +470,15 @@ function renderContent(){
     .filter(c => activeFilter==="all" || c.id===activeFilter)
     .map(c => ({
       ...c,
-      tools: search
-        ? c.tools.filter(t =>
-            t.name.toLowerCase().includes(search) ||
-            t.maker.toLowerCase().includes(search) ||
-            t.desc.toLowerCase().includes(search) ||
-            (t.tags||[]).some(tg => tg.toLowerCase().includes(search)) ||
-            c.name.toLowerCase().includes(search)
-          )
-        : c.tools
+      tools: c.tools.filter(t => {
+        if(!filterTool(t)) return false;
+        if(!search) return true;
+        return t.name.toLowerCase().includes(search) ||
+          t.maker.toLowerCase().includes(search) ||
+          t.desc.toLowerCase().includes(search) ||
+          (t.tags||[]).some(tg => tg.toLowerCase().includes(search)) ||
+          c.name.toLowerCase().includes(search);
+      })
     }))
     .filter(c => c.tools.length > 0 || (adminMode && activeFilter===c.id));
 
@@ -446,20 +507,31 @@ function renderContent(){
     </div>
   `).join("");
 
-  const total = categories.reduce((a,c)=>a+c.tools.length,0);
+  // stats
+  const allTools = categories.flatMap(c=>c.tools);
+  const total = allTools.length;
+  const freeCount = allTools.filter(t=>t.price==="free").length;
   document.getElementById("total-num").textContent = total+"+";
+  document.getElementById("free-num").textContent = freeCount+"+";
   document.getElementById("cat-num").textContent = categories.length;
-  document.getElementById("footer-text").textContent = `AI Universe Directory • ${total}+ ferramentas • 2025`;
+  document.getElementById("free-count").textContent = onlyFree
+    ? `${filtered.reduce((a,c)=>a+c.tools.length,0)} exibidas`
+    : `${freeCount} 100% grátis`;
+  document.getElementById("footer-text").textContent =
+    `AI Universe • ${total}+ ferramentas gratuitas • 2025–2026`;
 }
 
 function renderCard(tool, cat){
   return `
     <a class="ai-card" href="${tool.url||'#'}" target="_blank" rel="noopener"
       onclick="cardClick(event,'${tool.url||''}')"
-      onmouseover="this.style.borderColor='${cat.color}';this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 32px rgba(0,0,0,.5),0 0 0 1px ${cat.color}';this.querySelector('.card-glow').style.opacity='.04'"
+      onmouseover="this.style.borderColor='${cat.color}';this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 32px rgba(0,0,0,.5),0 0 0 1px ${cat.color}';this.querySelector('.card-glow').style.opacity='.06'"
       onmouseout="this.style.borderColor='#1a2230';this.style.transform='';this.style.boxShadow='';this.querySelector('.card-glow').style.opacity='0'">
       <div class="card-glow" style="background:linear-gradient(135deg,${cat.color},transparent)"></div>
-      <span class="card-badge badge-${tool.price}">${priceLabel(tool.price)}</span>
+      <div class="card-badges">
+        <span class="card-badge badge-${tool.price}">${priceLabel(tool.price)}</span>
+        ${tool.isNew ? `<span class="card-badge badge-new">NOVO</span>` : ""}
+      </div>
       <div class="card-top">
         <div class="card-emoji">${tool.emoji||"🤖"}</div>
         <div>
@@ -481,7 +553,7 @@ function renderCard(tool, cat){
 
 function cardClick(e, url){
   if(adminMode){ e.preventDefault(); return; }
-  if(!url){ e.preventDefault(); }
+  if(!url) e.preventDefault();
 }
 
 function render(){
@@ -490,6 +562,12 @@ function render(){
   renderFilters();
   renderContent();
 }
+
+// ─── TOGGLE FREE ONLY ─────────────────────────────────────────────────────────
+document.getElementById("only-free").addEventListener("change", function(){
+  onlyFree = this.checked;
+  render();
+});
 
 // ─── FILTERS ──────────────────────────────────────────────────────────────────
 function setFilter(id){
@@ -513,19 +591,13 @@ document.getElementById("search-clear").addEventListener("click", function(){
 
 // ─── ADMIN ────────────────────────────────────────────────────────────────────
 function showAdminLogin(){ openModal("modal-login"); setTimeout(()=>document.getElementById("admin-pass").focus(),100); }
-function enterAdmin(){
-  adminMode = true;
-  closeModal("modal-login");
-  document.getElementById("admin-pass").value = "";
-  render();
-}
-function exitAdmin(){ adminMode = false; render(); }
+function enterAdmin(){ adminMode=true; closeModal("modal-login"); document.getElementById("admin-pass").value=""; render(); }
+function exitAdmin(){ adminMode=false; render(); }
 
 // ─── MODALS ───────────────────────────────────────────────────────────────────
-function openModal(id){ document.getElementById(id).className = "modal-overlay show"; }
-function closeModal(id){ document.getElementById(id).className = "modal-overlay"; }
-
-document.querySelectorAll(".modal-overlay").forEach(el => {
+function openModal(id){ document.getElementById(id).className="modal-overlay show"; }
+function closeModal(id){ document.getElementById(id).className="modal-overlay"; }
+document.querySelectorAll(".modal-overlay").forEach(el=>{
   el.addEventListener("click", function(e){ if(e.target===this) closeModal(this.id); });
 });
 
@@ -538,9 +610,10 @@ function populateCatSelect(selectedId){
 function openAddTool(catId){
   editingToolId = null;
   document.getElementById("modal-tool-title").textContent = "Adicionar Nova IA";
-  ["f-id","f-name","f-maker","f-desc","f-url","f-tags"].forEach(id => document.getElementById(id).value = "");
+  ["f-id","f-name","f-maker","f-desc","f-url","f-tags"].forEach(id=>document.getElementById(id).value="");
   document.getElementById("f-emoji").value = "🤖";
   document.getElementById("f-price").value = "freemium";
+  document.getElementById("f-new").value = "";
   populateCatSelect(catId || categories[0]?.id);
   openModal("modal-tool");
   setTimeout(()=>document.getElementById("f-name").focus(),100);
@@ -560,6 +633,7 @@ function openEditTool(toolId, catId){
   document.getElementById("f-url").value = tool.url||"";
   document.getElementById("f-tags").value = (tool.tags||[]).join(", ");
   document.getElementById("f-price").value = tool.price||"freemium";
+  document.getElementById("f-new").value = tool.isNew ? "1" : "";
   populateCatSelect(catId);
   openModal("modal-tool");
 }
@@ -577,17 +651,18 @@ function saveTool(){
     url: document.getElementById("f-url").value.trim(),
     tags: document.getElementById("f-tags").value.split(",").map(t=>t.trim()).filter(Boolean),
     price: document.getElementById("f-price").value,
+    isNew: document.getElementById("f-new").value === "1",
   };
   if(editingToolId){
-    categories = categories.map(c => ({ ...c, tools: c.tools.filter(t=>t.id!==editingToolId) }));
+    categories = categories.map(c=>({...c, tools:c.tools.filter(t=>t.id!==editingToolId)}));
   }
-  categories = categories.map(c => c.id===catId ? { ...c, tools: [...c.tools, tool] } : c);
+  categories = categories.map(c => c.id===catId ? {...c, tools:[...c.tools, tool]} : c);
   save(); closeModal("modal-tool"); render();
 }
 
 function deleteTool(catId, toolId){
   if(!confirm("Remover essa IA?")) return;
-  categories = categories.map(c => c.id===catId ? { ...c, tools: c.tools.filter(t=>t.id!==toolId) } : c);
+  categories = categories.map(c=>c.id===catId ? {...c,tools:c.tools.filter(t=>t.id!==toolId)} : c);
   save(); render();
 }
 
@@ -595,7 +670,7 @@ function deleteTool(catId, toolId){
 function openAddCat(){
   editingCatId = null;
   document.getElementById("modal-cat-title").textContent = "Nova Categoria";
-  ["c-id","c-icon","c-name"].forEach(id => document.getElementById(id).value = "");
+  ["c-id","c-icon","c-name"].forEach(id=>document.getElementById(id).value="");
   document.getElementById("c-color").value = "#00e5ff";
   document.getElementById("c-color-picker").value = "#00e5ff";
   openModal("modal-cat");
@@ -620,15 +695,14 @@ function saveCat(){
   if(!name) return alert("Nome é obrigatório");
   const id = document.getElementById("c-id").value || uid();
   const cat = {
-    id,
-    name,
+    id, name,
     icon: document.getElementById("c-icon").value.trim()||"🤖",
     color: document.getElementById("c-color").value||"#00e5ff",
   };
   if(editingCatId){
-    categories = categories.map(c => c.id===editingCatId ? { ...c, ...cat } : c);
+    categories = categories.map(c=>c.id===editingCatId ? {...c,...cat} : c);
   } else {
-    categories.push({ ...cat, tools:[] });
+    categories.push({...cat, tools:[]});
   }
   save(); closeModal("modal-cat"); render();
 }
@@ -644,38 +718,29 @@ function deleteCat(catId){
 
 // ─── PWA INSTALL ──────────────────────────────────────────────────────────────
 let deferredPrompt = null;
-
-window.addEventListener("beforeinstallprompt", e => {
-  e.preventDefault();
-  deferredPrompt = e;
-  if(!localStorage.getItem("pwa-dismissed")) {
+window.addEventListener("beforeinstallprompt", e=>{
+  e.preventDefault(); deferredPrompt = e;
+  if(!localStorage.getItem("pwa-dismissed"))
     document.getElementById("install-banner").classList.add("show");
-  }
 });
-
-document.getElementById("btn-install-pwa").addEventListener("click", async () => {
+document.getElementById("btn-install-pwa").addEventListener("click", async()=>{
   if(!deferredPrompt) return;
   deferredPrompt.prompt();
-  const { outcome } = await deferredPrompt.userChoice;
+  const {outcome} = await deferredPrompt.userChoice;
   deferredPrompt = null;
   document.getElementById("install-banner").classList.remove("show");
-  if(outcome === "accepted") localStorage.setItem("pwa-dismissed","1");
+  if(outcome==="accepted") localStorage.setItem("pwa-dismissed","1");
 });
-
-document.getElementById("btn-dismiss-banner").addEventListener("click", () => {
+document.getElementById("btn-dismiss-banner").addEventListener("click",()=>{
   document.getElementById("install-banner").classList.remove("show");
   localStorage.setItem("pwa-dismissed","1");
 });
-
-window.addEventListener("appinstalled", () => {
-  document.getElementById("install-banner").classList.remove("show");
-});
+window.addEventListener("appinstalled",()=>
+  document.getElementById("install-banner").classList.remove("show"));
 
 // ─── SERVICE WORKER ───────────────────────────────────────────────────────────
 if("serviceWorker" in navigator){
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./sw.js").catch(()=>{});
-  });
+  window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
 }
 
 // ─── INIT ─────────────────────────────────────────────────────────────────────
